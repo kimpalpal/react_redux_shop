@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { data } from "../shared/data"
 
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 export default function Main() {
+ 
+  const products = useSelector (( state )=>state.상품들)
+
 
   return (
     <>
@@ -41,7 +43,7 @@ export default function Main() {
             }}
           >
             <div>
-            { data.map((product) => (
+            { products.map((product) => (
               <div 
                 style={{
                   display:"inline-block",
@@ -52,7 +54,7 @@ export default function Main() {
                   
                 }}
               >
-              <div> {product.name}</div>
+              <div key={product.id}>  {product.name}</div>
               </div>              
           ))}
             </div>

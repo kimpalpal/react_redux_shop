@@ -1,10 +1,15 @@
 import React from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { data } from "../shared/data"
+import { useSelector,useDispatch} from "react-redux";
+import { sortByPrice } from "..";
+import { reset } from "..";
+
 export default function Products() {
 //가격순으로 정리하기 1.useSearchParams 사용하여 2.버튼에 onClick으로 함수실행
 //const [값, 변경함수 ] = useSearchParams();  
-const [searchParas,setSearchParams] = useSearchParams();
+const [searchParams,setSearchParams] = useSearchParams();
+const products = useSelector (( state )=>state.상품들)
+const dispatch = useDispatch();
 
     return (
     <>
@@ -20,12 +25,17 @@ const [searchParas,setSearchParams] = useSearchParams();
           margin:"10px",
          }}
          onClick={()=>{
-          // setSearchParams ({객체형태}) -> useEffect를 사용해서 데이터 순서를 바꿀 수 있음 
-          setSearchParams({
-            sort:"price",
-          });
+          dispatch(sortByPrice());
          }}
          >가격순으로 정리 </button>
+         <button style={{
+          margin:"10px",
+         }}
+         onClick={()=>{
+          dispatch(reset());
+         }}
+         >리셋 </button>
+
         <div
           style={{
             display: "flex",
@@ -37,7 +47,7 @@ const [searchParas,setSearchParams] = useSearchParams();
           {/* 상품 클릭시 해당 상품 페이지로 이동하기 
           - <Link to="/상품페이지주소"></Link> */}
           
-            { data.map((product) => (
+            { products.map((product) => (
               <Link  key={product.id} to={`/products${product.to}`}>
                 <div  
                 style={{
@@ -53,8 +63,7 @@ const [searchParas,setSearchParams] = useSearchParams();
               </div>
               </Link>
           ))}
-          
-         
+                 
          </div>
       </div>
     </>
